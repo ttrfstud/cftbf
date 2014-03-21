@@ -14,9 +14,9 @@ module.exports = heapsort = function (a, low, high, comp, swap) {
 };
 
 function heapify(a, low, high, comp, swap) {
-	// last parent node
 	var count = high - low + 1;
-
+	
+	// last parent node
 	var start = low + Math.floor((count - 2) / 2);
 
 	while (start >= low) {
