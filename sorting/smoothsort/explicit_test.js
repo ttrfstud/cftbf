@@ -4,11 +4,11 @@ var tests = [
 	function test1() {
 		var heap = new lheap(6);
 		heap.insert(2);
-		console.log('afta inserting 2', JSON.stringify(heap.trees));
+		// console.log('afta inserting 2', JSON.stringify(heap.trees));
 		heap.insert(0);
-		console.log('afta inserting 0', JSON.stringify(heap.trees));
+		// console.log('afta inserting 0', JSON.stringify(heap.trees));
 		heap.insert(7);
-		console.log('afta inserting 7', JSON.stringify(heap.trees));
+		// console.log('afta inserting 7', JSON.stringify(heap.trees));
 
 		if (heap.trees.length !== 2) throw new Error(JSON.stringify(heap));
 		if (heap.trees[0][0] !== 6) throw new Error(JSON.stringify(heap));
@@ -126,6 +126,47 @@ var tests = [
 		if (heap.trees[0][1][2][0] !== 4) throw new Error(JSON.stringify(heap));
 		if (heap.trees[0][2][0] !== 1) throw new Error(JSON.stringify(heap));
 
+		console.log('Hey, all passed!');
+	},
+	function test6() {
+		var tree1 = [234,[32,[12,[1],[4]],[1]],[32,[1],[1]]];
+		tree1.size = 9;
+		var tree2 = [1212121,[5,[3],[2]],[71]];
+		tree2.size = 5;
+
+		var heap = new lheap();
+		heap.trees = [ tree1, tree2 ];
+
+		heap.insert(955);
+
+		if (heap.trees[0][2][0] !== 955) throw new Error(JSON.stringify(heap));
+		if (heap.trees[0][2][2][0] != 71) throw new Error(JSON.stringify(heap));
+	},
+	function test7() {
+		var tree1 = [32,[32,[12,[1],[4]],[1]],[5,[1],[1]]];
+		tree1.size = 9;
+		var tree2 = [71,[3],[2]];
+		tree2.size = 3;
+
+		var heap = new lheap();
+		heap.trees = [ tree1, tree2 ];
+
+		heap.dequeue();
+
+		if (heap.trees.length !== 3) throw new Error(JSON.stringify());
+		if (heap.trees[0][0] !== 12) throw new Error(JSON.stringify());
+		if (heap.trees[0][1][0] !== 4) throw new Error(JSON.stringify());
+		if (heap.trees[0][1][1][0] !== 3) throw new Error(JSON.stringify());
+		if (heap.trees[0][1][1][1][0] !== 1) throw new Error(JSON.stringify());
+		if (heap.trees[0][1][1][2][0] !== 2) throw new Error(JSON.stringify());
+		if (heap.trees[0][1][2][0] !== 1) throw new Error(JSON.stringify());
+		if (heap.trees[0][2][0] !== 5) throw new Error(JSON.stringify());
+		if (heap.trees[0][2][1][0] !== 1) throw new Error(JSON.stringify());
+		if (heap.trees[0][2][2][0] !== 1) throw new Error(JSON.stringify());
+		if (heap.trees[1][0] !== 32) throw new Error(JSON.stringify());
+		if (heap.trees[2][0] !== 32) throw new Error(JSON.stringify());
+
+		[12,[4,[3,[1],[2]],[1]],[5,[1],[1]]], [32], [32];
 		console.log('Hey, all passed!');
 	}
 ];

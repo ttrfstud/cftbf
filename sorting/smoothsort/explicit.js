@@ -50,34 +50,37 @@ function rebalance(heap, cap) {
 
 	var last = heap[cap];
 	var root = last[0];
-	var rchild = last[1] && last[1][0] || void 0;
-	var lchild = last[2] && last[2][0] || void 0;
+	var lchild = last[1] && last[1][0] || void 0;
+	var rchild = last[2] && last[2][0] || void 0;
 
+	// console.log(root);
+	// console.log(lchild);
+	// console.log(rchild);
 	for (var i = heap.length - 2; i >= 0; i--) {
 		ct = heap[i];
 		cro = ct[0];
 
 		if (cro > root && (cro > rchild && cro > lchild || !rchild && !lchild)) {
 			sidx = i;
-			break;
+			last[0] = cro;
+			ct[0] = root;
+			last = ct;
+			lchild = last[1] && last[1][0] || void 0;
+			rchild = last[2] && last[2][0] || void 0;
 		}
 	}
 
-	if (typeof sidx !== 'undefined') {
-		last[0] = cro;
-		ct[0] = root;
-	} else {
+	if (typeof sidx === 'undefined') {
 		ct = last;
+	} else {
+		ct = heap[sidx];
 	}
-
-	// siftdown the displaced root down the heap
 
 	while(true) {
 		if (!ct[1]) return; // no left child, no right child
 
 		crc = ct[1][0];
 		clc = ct[2][0];
-
 		if (crc > root) {
 			fr = true;
 		}
@@ -87,7 +90,7 @@ function rebalance(heap, cap) {
 		}
 
 		if (fl && fr) {
-			if (crc >= clc) {
+			if (crc > clc) {
 				fl = 0;
 			} else {
 				fr = 0;
@@ -106,6 +109,8 @@ function rebalance(heap, cap) {
 			// the tree is already balanced
 			return;
 		}
+
+		fl = fr = void 0;
 	}
 }
 
@@ -132,8 +137,18 @@ lheap.prototype.dequeue = function () {
 		this.trees.push(rchild);
 		rebalance(this.trees, this.trees.length - 2);
 		rebalance(this.trees, this.trees.length - 1);
+
 	}
 
+	console.log('jjj', JSON.stringify(this.trees));
+
+		var story = '';
+		var trees = this.trees;
+		this.trees.forEach(function (tree) {
+			story += ' ' + tree.size;
+		});
+
+		console.log(story);
 	return retval;
 }
 
@@ -144,19 +159,19 @@ var smoothsort = module.exports.smoothsort = function (a, low, high, comp, swap)
 
 	heap = new lheap(a[low]);
 	for (i = low + 1; i <= high; i++) {
-		console.log(JSON.stringify(heap));
-		var story = '';
-		heap.trees.forEach(function (tree) {
-			story += ' ' + tree.size;
-		});
+		// console.log(JSON.stringify(heap));
+		// var story = '';
+		// heap.trees.forEach(function (tree) {
+			// story += ' ' + tree.size;
+		// });
 
-		console.log(story);
+		// console.log(story);
 		heap.insert(a[i]);
 	}
 
 	pos = high;
 
-	console.log(JSON.stringify(heap, null, '\t'));
+	console.log(JSON.stringify(heap));
 
 		var story = '';
 		heap.trees.forEach(function (tree) {
@@ -171,13 +186,13 @@ var smoothsort = module.exports.smoothsort = function (a, low, high, comp, swap)
 	return a;
 };
 
-// var res = smoothsort([12,32,32,4,1,1,234,1,1,1212121,3,2,5,71,955], 0, 14, numeric_comparator, function (a, i, j) {
-// 	var temp;
+var res = smoothsort([12,32,32,4,1,1,234,1,1,1212121,3,2,5,71,955], 0, 14, numeric_comparator, function (a, i, j) {
+	var temp;
 
-// 	temp = a[j];
-// 	a[j] = a[i];
-// 	a[i] = temp;
+	temp = a[j];
+	a[j] = a[i];
+	a[i] = temp;
 
-// });
+});
 
-// console.log(res);
+console.log(res);
